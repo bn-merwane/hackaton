@@ -1,7 +1,8 @@
-from django.shortcuts import render
-from app.models import *
-
-# Create your views here.
+# views.py
+from django.http import JsonResponse
+from .models import Text
 
 def test1(request):
-    return test.objects.get(id=1)
+    # Assuming you want to return a specific Text object
+    text_object = Text.objects.get(id=1)  # Fetch the Text object with ID 1
+    return JsonResponse({'content': text_object.text})
