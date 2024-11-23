@@ -2,6 +2,7 @@ from pathlib import Path
 import os
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,6 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework.authtoken',
+    'rest_framework',
     'apps.accounts',
     'apps.analytics',
     'apps.posts',
@@ -91,3 +94,37 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'accounts.Account'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 1,
+}
+
+
+
+AUTHENTICATION_BACKENDS = [
+    'postdz.settings.authentificate.EmailOrUsernameBackend',  
+    'django.contrib.auth.backends.ModelBackend',  
+]
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your SMTP server
+EMAIL_PORT = 587                 # Use 465 for SSL, 587 for TLS
+EMAIL_USE_TLS = True             # Use TLS if you’re using port 587
+EMAIL_USE_SSL = False            # Use SSL if you’re using port 465
+EMAIL_HOST_USER = '7arfa2024@gmail.com'  # Your SMTP username
+EMAIL_HOST_PASSWORD = 'weps qxmz rnhp mgvr'          # Your SMTP password
+DEFAULT_FROM_EMAIL = '7arfa2024@gmail.com'  # Default sender address
+
