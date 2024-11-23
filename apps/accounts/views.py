@@ -21,6 +21,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
+from apps.tickets.models import Ticket
 
 
 
@@ -57,13 +58,21 @@ class Login(APIView):
             if email:
                 # Authenticate using email
                 user = authenticate(username=email, password=password)
-                if user:
-                    # Generate or retrieve token
-                    token, _ = Token.objects.get_or_create(user=user)
-                    return Response(
-                        {"message": "Logged in successfully", "token": token.key},
+                try:
+                    ticket = Ticket.objects.get(owner=user)
+                    if ticket:
+                     token, _ = Token.objects.get_or_create(user=user)
+                     return Response(
+                        {"message": "Logged in successfully", "token": token.key,"has_ticket":True},
                         status=status.HTTP_200_OK
                     )
+                except:
+
+                     token, _ = Token.objects.get_or_create(user=user)
+                     return Response(
+                        {"message": "Logged in successfully", "token": token.key,"has_ticket":False},
+                        status=status.HTTP_200_OK
+                    )                        
                 else:
                     return Response(
                         {"message": "Invalid email or password"},
@@ -188,6 +197,8 @@ class ValidateResetCodeView(APIView):
 
 
 class ResetPasswordView(APIView):
+    authentication_classes = []
+    permission_classes = []
     def post(self, request, signed_data):
         email, error = validate_signed_url(signed_data)
         if error:
