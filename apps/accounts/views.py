@@ -58,7 +58,8 @@ class Login(APIView):
             if email:
                 # Authenticate using email
                 user = authenticate(username=email, password=password)
-                try:
+                if user:
+                 try:
                     ticket = Ticket.objects.get(owner=user)
                     if ticket:
                      token, _ = Token.objects.get_or_create(user=user)
@@ -66,7 +67,7 @@ class Login(APIView):
                         {"message": "Logged in successfully", "token": token.key,"has_ticket":True},
                         status=status.HTTP_200_OK
                     )
-                except:
+                 except:
 
                      token, _ = Token.objects.get_or_create(user=user)
                      return Response(
