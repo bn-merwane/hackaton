@@ -2,6 +2,9 @@
 from django.contrib import admin
 from django.urls import path,include
 from apps.analytics.views import Analysis
+from django.contrib import admin
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,3 +14,5 @@ urlpatterns = [
     path('analysis/',Analysis.as_view())
 
 ]
+
+

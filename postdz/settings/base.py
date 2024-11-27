@@ -44,8 +44,8 @@ ROOT_URLCONF = 'postdz.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / "templates"],  # Add global template directory here if needed
+        'APP_DIRS': True,  # Enables app-level templates
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
